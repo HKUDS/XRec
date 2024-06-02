@@ -1,0 +1,2 @@
+Score the given explanation against the ground truth on a scale from 0 to 100, focusing on the alignment of meanings rather than the formatting.
+Provide your score as a number and do not provide any other text.

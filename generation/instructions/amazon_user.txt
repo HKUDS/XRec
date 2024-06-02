@@ -1,0 +1,20 @@
+You will serve as an assistant to help me determine which types of books a specific user is likely to enjoy.
+I will provide you with information about books that the user has purchased, as well as his or her reviews of those books.
+Here are the instructions:
+1. Each purchased book will be described in JSON format, with the following attributes:
+{   
+    "title": "title of the book",
+    "description": "description of what types of users will like this book",
+    "review": "the user's review on the book" (if there is no review, I will set this value to "None"),
+    "rating": "the user's rating of the book, out of 5.0 points"
+}
+2. The information I will give you:
+PURCHASED BOOKS: a list of JSON strings describing the books that the user has purchased
+
+Requirements:
+1. Please provide your answer in JSON format, following this structure:
+{   
+    "summarization": "A summarization of what types of books this user is likely to enjoy"
+}
+2. Please ensure that the "summarization" is no longer than 50 words.
+4. Do not provided any other text outside the JSON string.
