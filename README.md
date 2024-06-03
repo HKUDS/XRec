@@ -72,21 +72,21 @@ Supported datasets:  `amazon`, `google`, `yelp`
 │   └── train_encoder.py                  # derive user/item embeddings
 ├── explainer
 │   ├── models
-│   │   ├── explainer.py                  # RecExplainer model
+│   │   ├── explainer.py                  # XRec RecExplainer model
 │   │   └── modeling_explainer.py         # modified PyTorch LLaMA model
 │   ├── utils
-│   ├── main.py                           # employ RecExplainer                
+│   ├── main.py                           # employ XRec                
 │   └── sample.py                         # see samples of generated explanations
 ├── generation
 │   ├── instructions                      # system prompts for user/item profile and
 │   ├── explanations
 │   ├── item_profile                      # generate item profile
 │   │   ├── item_prompts.json
-│   │   ├── item_sysytem_prompt.json
+│   │   ├── item_system_prompt.json
 │   │   └── generate_profile.py
 │   ├── user_profile                      # generate user profile
 │   │   ├── user_prompts.json
-│   │   ├── user_sysytem_prompt.json
+│   │   ├── user_system_prompt.json
 │   │   └── generate_profile.py
 │   └── explanation                       # generate ground truth explanation
 │       ├── exp_prompts.json
