@@ -10,7 +10,7 @@ from utils.parse import args
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print(f"using device {device}")
 
-class RecExplainer:
+class XRec:
     def __init__(self):
         print(f"dataset: {args.dataset}")
         self.model = Explainer().to(device)
@@ -100,7 +100,7 @@ class RecExplainer:
         print(f"Saved references to {references_path}")   
 
 def main():
-    sample = RecExplainer()
+    sample = XRec()
     if args.mode == "finetune":
         print("Finetune model...")
         sample.train()
