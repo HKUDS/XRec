@@ -1,5 +1,9 @@
 # XRec: Large Language Models for Explainable Recommendation
 
+-----
+[Qiyao Ma](https://martin-qyma.github.io), [Xubin Ren](https://ren-xubin.github.io), [Chao Huang](https://sites.google.com/view/chaoh/home)*.
+-----
+
 This paper presents a model-agnostic framework, **XRec**, that integrates the graph-based collaborative filtering framework with Large Language Models (LLMs) to generate comprehensive explanations for recommendations. By leveraging the inherent collaborative user-item relationships and harnessing the powerful textual generation capabilities of LLMs, XRec establishes a strong connection between collaborative signals and language semantics through the utilization of a Mixture of Experts (MoE) adapter.
 
 <p align="center">
@@ -59,16 +63,15 @@ Supported datasets:  `amazon`, `google`, `yelp`
 Below is a example of generating explanation for a specific user-item recommendation using the ``Yelp`` dataset.
 
 ### Input
-- Item profile:
+- Item profile processed by GPT:
   ```
   MD Oriental Market, is summarized to attract Fans of Asian cuisine, individuals looking for a variety of Asian products, and those seeking unique and ethnic food items would enjoy MD Oriental Market. Customers interested in a well-organized, spacious, and clean grocery store with a diverse selection of Asian ingredients and products would also appreciate this location.
   ```
-- User profile:
+- User profile processed by GPT:
   ```
   This user is likely to enjoy casual American comfort food, barbecue with various meat options and tasty sauces, high-quality dining experiences with tasting menus, and authentic Italian food and beverages in cozy atmospheres.
   ```
-- Item interaction history
-- User interaction history
+- User/Item interaction history processed by Graph Neural Networks (GNNs)
   
 ### Output
 - Explanation for the user-item recommendation:
