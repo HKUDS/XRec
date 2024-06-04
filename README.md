@@ -1,6 +1,8 @@
 # XRec: Large Language Models for Explainable Recommendation
 
 [Qiyao Ma](https://martin-qyma.github.io), [Xubin Ren](https://ren-xubin.github.io), [Chao Huang](https://sites.google.com/view/chaoh/home)*.
+(*Correspondence)
+
 -----
 
 This paper presents a model-agnostic framework, **XRec**, that integrates the graph-based collaborative filtering framework with Large Language Models (LLMs) to generate comprehensive explanations for recommendations. By leveraging the inherent collaborative user-item relationships and harnessing the powerful textual generation capabilities of LLMs, XRec establishes a strong connection between collaborative signals and language semantics through the utilization of a Mixture of Experts (MoE) adapter.
