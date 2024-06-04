@@ -1,6 +1,5 @@
 # XRec: Large Language Models for Explainable Recommendation
 
------
 [Qiyao Ma](https://martin-qyma.github.io), [Xubin Ren](https://ren-xubin.github.io), [Chao Huang](https://sites.google.com/view/chaoh/home)*.
 -----
 
