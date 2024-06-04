@@ -54,6 +54,28 @@ Each of the below commands can be run independently, since the finetuned LLM and
 
 Supported datasets:  `amazon`, `google`, `yelp`
 
+## Example
+
+Below is a example of generating explanation for a specific user-item recommendation using the ``Yelp`` dataset.
+
+### Input
+- Item profile:
+  ```
+  MD Oriental Market, is summarized to attract Fans of Asian cuisine, individuals looking for a variety of Asian products, and those seeking unique and ethnic food items would enjoy MD Oriental Market. Customers interested in a well-organized, spacious, and clean grocery store with a diverse selection of Asian ingredients and products would also appreciate this location.
+  ```
+- User profile:
+  ```
+  This user is likely to enjoy casual American comfort food, barbecue with various meat options and tasty sauces, high-quality dining experiences with tasting menus, and authentic Italian food and beverages in cozy atmospheres.
+  ```
+- Item interaction history
+- User interaction history
+  
+### Output
+- Explanation for the user-item recommendation:
+  ```
+  The user would enjoy this business for its vast selection of Asian ingredients, including fresh produce, sauces, condiments, and spices, making it a go-to for authentic and diverse cooking options.
+  ```
+
 ## Code Structure
 
 ```
