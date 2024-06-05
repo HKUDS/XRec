@@ -102,7 +102,7 @@ Below is a example of generating explanation for a specific user-item recommenda
 │   └── train_encoder.py                  # derive user/item embeddings
 ├── explainer
 │   ├── models
-│   │   ├── explainer.py                  # XRec RecExplainer model
+│   │   ├── explainer.py                  # XRec model
 │   │   └── modeling_explainer.py         # modified PyTorch LLaMA model
 │   ├── utils
 │   ├── main.py                           # employ XRec                
