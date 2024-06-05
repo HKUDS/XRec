@@ -1,5 +1,6 @@
 # XRec: Large Language Models for Explainable Recommendation
 
+<img src='XRec_cover.png' />
 
 PyTorch implementation for [XRec: Large Language Models for Explainable Recommendation](http://arxiv.org/abs/2406.02377)
 
