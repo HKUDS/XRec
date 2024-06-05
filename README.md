@@ -1,7 +1,11 @@
 # XRec: Large Language Models for Explainable Recommendation
 
-[Qiyao Ma](https://martin-qyma.github.io), [Xubin Ren](https://ren-xubin.github.io), [Chao Huang](https://sites.google.com/view/chaoh/home)*.
-(*Correspondence)
+
+PyTorch implementation for [XRec: Large Language Models for Explainable Recommendation](http://arxiv.org/abs/2406.02377)
+
+ >**XRec: Large Language Models for Explainable Recommendation**  
+ >Qiyao Ma, Xubin Ren, Chao Huang*\
+ >*Preprint 2024*
 
 -----
 
@@ -122,4 +126,17 @@ Below is a example of generating explanation for a specific user-item recommenda
     ├── main.py
     ├── metrics.py               
     └── system_prompt.txt                  # system prompt for GPTScore
+```
+
+## Citation
+If you find XRec helpful to your research or applications, please kindly cite:
+```
+@misc{ma2024xrec,
+      title={XRec: Large Language Models for Explainable Recommendation}, 
+      author={Qiyao Ma and Xubin Ren and Chao Huang},
+      year={2024},
+      eprint={2406.02377},
+      archivePrefix={arXiv},
+      primaryClass={cs.IR}
+}
 ```
