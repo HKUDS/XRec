@@ -131,13 +131,11 @@ Below is a example of generating explanation for a specific user-item recommenda
 
 ## Citation
 If you find XRec helpful to your research or applications, please kindly cite:
-```
-@misc{ma2024xrec,
-      title={XRec: Large Language Models for Explainable Recommendation}, 
-      author={Qiyao Ma and Xubin Ren and Chao Huang},
-      year={2024},
-      eprint={2406.02377},
-      archivePrefix={arXiv},
-      primaryClass={cs.IR}
+```bibtex
+@article{ma2024xrec,
+  title={XRec: Large Language Models for Explainable Recommendation},
+  author={Ma, Qiyao and Ren, Xubin and Huang, Chao},
+  journal={arXiv preprint arXiv:2406.02377},
+  year={2024}
 }
 ```
