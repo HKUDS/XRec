@@ -26,7 +26,7 @@ pip install -r requirements.txt
 
 ## Datasets
 
-We utilize three public datasets: Amazon-books `amazon`, Google-reviews `google`, Yelp `yelp`.User/item profile and explanations for each dataset are provided in `data/{dataset}/data.json`.To generate user/item profile and explanations from scratch, enter your **OpenAI API Key** in line 7 of these files: `generation/{item_profile/user_profile/explanation}/generate_{profile/exp}.py`.
+We utilize three public datasets: Amazon-books `amazon`, Google-reviews `google`, Yelp `yelp`. To generate user/item profile and explanations from scratch, enter your **OpenAI API Key** in line 7 of these files: `generation/{item_profile/user_profile/explanation}/generate_{profile/exp}.py`.
 
 - **Item Profile Generation**:
   ```
