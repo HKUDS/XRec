@@ -6,14 +6,27 @@ import torch.nn as nn
 from models.explainer import Explainer
 from utils.data_handler import DataHandler
 from utils.parse import args
+from utils.ollama_utils import ensure_ollama_ready, print_ollama_status
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print(f"using device {device}")
 
 class XRec:
-    def __init__(self):
+    def __init__(self, model_name="llama3.1:8b"):
         print(f"dataset: {args.dataset}")
-        self.model = Explainer().to(device)
+        print(f"model: {model_name}")
+
+        # Check Ollama setup before initializing the model
+        print("Checking Ollama setup...")
+        if not ensure_ollama_ready(model_name):
+            print("❌ Ollama setup failed. Please check the setup instructions.")
+            print_ollama_status()
+            raise RuntimeError("Ollama is not properly set up. Please run 'python setup_ollama.py' or install Ollama manually.")
+
+        print("✅ Ollama is ready!")
+
+        # Initialize the model with Ollama
+        self.model = Explainer(model_name=model_name).to(device)
         self.data_handler = DataHandler()
 
         self.trn_loader, self.val_loader, self.tst_loader = self.data_handler.load_data()
@@ -45,7 +58,8 @@ class XRec:
                     print(
                         f"Epoch [{epoch}/{args.epochs}], Step [{i}/{len(self.trn_loader)}], Loss: {loss.item()}"
                     )
-                    print(f"Generated Explanation: {outputs[0]}")
+                    # During training, we don't generate actual text, just train the embeddings
+                    print(f"Training embedding converters... (no text generation during training)")
 
             print(f"Epoch [{epoch}/{args.epochs}], Loss: {total_loss}")
             # Save the model
@@ -100,13 +114,30 @@ class XRec:
         print(f"Saved references to {references_path}")   
 
 def main():
-    sample = XRec()
-    if args.mode == "finetune":
-        print("Finetune model...")
-        sample.train()
-    elif args.mode == "generate":
-        print("Generating explanations...")
-        sample.evaluate()
+    # Get model name from args or use default
+    model_name = getattr(args, 'model_name', 'llama3.1:8b')
+
+    try:
+        sample = XRec(model_name=model_name)
+        if args.mode == "finetune":
+            print("Finetune model...")
+            sample.train()
+        elif args.mode == "generate":
+            print("Generating explanations...")
+            sample.evaluate()
+    except RuntimeError as e:
+        print(f"Error: {e}")
+        print("\nTo fix this issue:")
+        print("1. Install Ollama: curl -fsSL https://ollama.ai/install.sh | sh")
+        print("2. Start Ollama: ollama serve")
+        print("3. Download model: ollama pull llama3.1:8b")
+        print("4. Or run the setup script: python setup_ollama.py")
+        return 1
+    except Exception as e:
+        print(f"Unexpected error: {e}")
+        return 1
+
+    return 0
 
 if __name__ == "__main__":
-    main()
+    exit(main())

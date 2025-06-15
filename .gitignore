@@ -1,21 +1,80 @@
-# Ignore Mac system files
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual Environment
+.venv/
+venv/
+ENV/
+env/
+.env
+
+# PyTorch
+*.pth
+*.pt
+
+# Pickle files (data converters)
+*.pkl
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
 .DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
 
-# Other common files to ignore
-node_modules/
+# Logs
 *.log
-*.env
+logs/
 
-# Ignore compiled files
+# Cache
+.cache/
+*.cache
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# Hugging Face cache
+.cache/huggingface/
+
+# Ollama models (if stored locally)
+.ollama/
+
+# Compiled files
 *.class
 *.pyc
 *.o
 *.out
-
-# Ignore temporary files
-*.tmp
-*.swp
-
-# Ignore IDE/editor specific files
-.vscode/
-.idea/

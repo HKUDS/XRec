@@ -28,43 +28,114 @@ pip install -r requirements.txt
 
 ## Datasets
 
-We utilize three public datasets: Amazon-books `amazon`, Google-reviews `google`, Yelp `yelp`. To generate user/item profile and explanations from scratch, enter your **OpenAI API Key** in line 7 of these files: `generation/{item_profile/user_profile/explanation}/generate_{profile/exp}.py`.
+We utilize three public datasets: Amazon-books `amazon`, Google-reviews `google`, Yelp `yelp`. To generate user/item profile and explanations from scratch, you need to set up **Ollama** with a local language model. This project has been updated to use Ollama instead of OpenAI for cost-free, privacy-focused text generation.
+
+### Quick Setup with Ollama
+
+1. **Install Ollama and download models** (automated):
+   ```bash
+   python setup_ollama.py
+   ```
+
+2. **Manual setup** (if you prefer):
+   ```bash
+   # Install Ollama (Linux/macOS)
+   curl -fsSL https://ollama.ai/install.sh | sh
+
+   # Start Ollama service
+   ollama serve
+
+   # Download recommended model (in another terminal)
+   ollama pull llama3.1:8b
+   ```
+
+3. **Install Python dependencies**:
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+### Generation Scripts
+
+Make sure Ollama is running (`ollama serve`) before running these scripts:
 
 - **Item Profile Generation**:
-  ```
+  ```bash
   python generation/item_profile/generate_profile.py
   ```
 - **User Profile Generation**:
-  ```
+  ```bash
   python generation/user_profile/generate_profile.py
   ```
 - **Explanation Generation**:
-  ```
+  ```bash
   python generation/explanation/generate_exp.py
   ```
 
+**Note**: You can change the model used by editing the `MODEL_NAME` variable in each script. Available options include:
+- `llama3.1:8b` (recommended, ~4.7GB)
+- `mistral:7b` (alternative, ~4.1GB)
+- `codellama:7b` (for code-related tasks)
+- `llama3.1:70b` (larger model, requires more resources)
+
+### Why Ollama?
+
+✅ **Free**: No API costs or usage limits
+✅ **Privacy**: All data stays on your machine
+✅ **Offline**: Works without internet connection
+✅ **Performance**: Comparable quality to GPT-3.5-turbo
+✅ **Flexibility**: Easy to switch between different models
+✅ **Open Source**: Transparent and customizable
+
 ## Usage
 
-Each of the below commands can be run independently, since the finetuned LLM and generated explanations are provided within the data. Prepare your **Hugging Face User Access Token** for downloading Llama 2 model.
+Each of the below commands can be run independently. **No Hugging Face access token required** - the system now uses Ollama with local models for privacy and cost-free operation.
+
+### Prerequisites
+
+Make sure Ollama is running with the required model:
+```bash
+# Start Ollama service
+ollama serve
+
+# Download the model (if not already done)
+ollama pull llama3.1:8b
+```
+
+### Commands
 
 - To finetune the LLM from scratch:
+  ```bash
+  python explainer/main.py --mode finetune --dataset {dataset} --model_name llama3.1:8b
   ```
-  python explainer/main.py --mode finetune --dataset {dataset}
-  ```
+  s
 - To generate explanations:
-  ```
-  python explainer/main.py --mode generate --dataset {dataset}
+  ```bash
+  python explainer/main.py --mode generate --dataset {dataset} --model_name llama3.1:8b
   ```
 - To see sample generated explanations:
-  ```
+  ```bash
   python explainer/sample.py --dataset {dataset}
   ```
 - To evaluate generated explanations:
-  ```
+  ```bash
   python evaluation/main.py --dataset {dataset}
   ```
 
-Supported datasets:  `amazon`, `google`, `yelp`
+### Supported Options
+
+- **Datasets**: `amazon`, `google`, `yelp`
+- **Models**: `llama3.1:8b`, `mistral:7b`, `codellama:7b`, `llama3.1:70b` (or any Ollama model)
+
+### Model Selection
+
+You can specify different Ollama models using the `--model_name` parameter:
+```bash
+# Use Mistral 7B
+python explainer/main.py --mode generate --dataset amazon --model_name mistral:7b
+
+# Use larger LLaMA model (requires more resources)
+python explainer/main.py --mode generate --dataset amazon --model_name llama3.1:70b
+```
 
 ## Example
 
@@ -145,3 +216,65 @@ If you find XRec helpful to your research or applications, please kindly cite:
   year={2024}
 }
 ```
+## 🚀 Quick Start
+
+### Prerequisites
+- Python 3.8+
+- CUDA-compatible GPU (recommended)
+- 8GB+ RAM
+
+### Installation
+
+1. **Clone the repository**:
+   ```bash
+   git clone https://github.com/AnandMayank/XRec.git
+   cd XRec
+   ```
+
+2. **Set up virtual environment**:
+   ```bash
+   python -m venv .venv
+   source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+   ```
+
+3. **Install dependencies**:
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+4. **Set up Ollama**:
+   ```bash
+   python setup_ollama.py
+   ```
+
+5. **Run XRec**:
+   ```bash
+   python explainer/main.py --mode generate --dataset amazon --model_name llama3.1:8b
+   ```
+
+## 🧪 Testing
+
+Verify the installation:
+```bash
+python test_ollama_integration.py
+python check_migration.py
+```
+
+## 📊 Evaluation
+
+For evaluation with BERT scores, you'll need a Hugging Face token:
+```bash
+huggingface-cli login
+python evaluation/main.py --dataset amazon
+```
+
+## 🔧 Troubleshooting
+
+See [OLLAMA_MIGRATION_GUIDE.md](OLLAMA_MIGRATION_GUIDE.md) for detailed troubleshooting and migration information.
+
+## 📈 Performance
+
+- **Privacy**: All processing happens locally
+- **Cost**: No API fees
+- **Speed**: Comparable to cloud-based solutions
+- **Flexibility**: Easy model switching

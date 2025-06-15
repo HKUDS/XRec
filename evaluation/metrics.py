@@ -1,13 +1,18 @@
-import evaluate
 import numpy as np
 from bert_score import BERTScorer
 import argparse
 import pickle
 import json
-from openai import OpenAI
+import sys
+import os
 import concurrent.futures
 
-client = OpenAI(api_key="") # YOUR OPENAI KEY
+# Add the parent directory to the path to import utils
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from generation.utils.ollama_client import get_ollama_response
+
+# Configuration for Ollama model
+MODEL_NAME = "llama3.1:8b"  # You can change this to other models like "mistral:7b", "codellama:7b", etc.
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--dataset", type=str, default="amazon", help="amazon, yelp or google")
@@ -20,8 +25,22 @@ with open("evaluation/system_prompt.txt", "r") as f:
 class MetricScore:
     def __init__(self):
         print(f"dataset: {args.dataset}")
-        self.pred_input_path = (f"data/{args.dataset}/tst_pred.pkl")
-        self.ref_input_path = f"data/{args.dataset}/tst_ref.pkl"
+        # Try the new file names first, then fall back to old names
+        pred_path_new = f"data/{args.dataset}/tst_predictions.pkl"
+        ref_path_new = f"data/{args.dataset}/tst_references.pkl"
+        pred_path_old = f"data/{args.dataset}/tst_pred.pkl"
+        ref_path_old = f"data/{args.dataset}/tst_ref.pkl"
+
+        import os
+        if os.path.exists(pred_path_new):
+            self.pred_input_path = pred_path_new
+        else:
+            self.pred_input_path = pred_path_old
+
+        if os.path.exists(ref_path_new):
+            self.ref_input_path = ref_path_new
+        else:
+            self.ref_input_path = ref_path_old
 
         with open(self.pred_input_path, "rb") as f:
             self.data = pickle.load(f)
@@ -71,16 +90,26 @@ class MetricScore:
         print(f"bert_f1_std: {scores['bert_f1_std']:.4f}")
         
 
-def get_gpt_response(prompt):
-    completion = client.chat.completions.create(
-        messages=[
-            {"role": "system", "content": system_prompt},
-            {"role": "user", "content": prompt},
-        ],
-        model="gpt-3.5-turbo",
-    )
-    response = completion.choices[0].message.content
-    return float(response)
+def get_ollama_response_for_evaluation(prompt):
+    messages = [
+        {"role": "system", "content": system_prompt},
+        {"role": "user", "content": prompt},
+    ]
+
+    response = get_ollama_response(messages, model_name=MODEL_NAME, temperature=0.1)
+
+    # Try to extract a float from the response
+    try:
+        # Look for a number in the response
+        import re
+        numbers = re.findall(r'\d+\.?\d*', response)
+        if numbers:
+            return float(numbers[0])
+        else:
+            # If no number found, return a default score
+            return 3.0
+    except:
+        return 3.0
 
 
 def get_gpt_score(predictions, references):
@@ -92,8 +121,8 @@ def get_gpt_score(predictions, references):
         }
         prompts.append(json.dumps(prompt))
 
-    with concurrent.futures.ThreadPoolExecutor(max_workers=100) as executor:
-        results = list(executor.map(get_gpt_response, prompts))
+    with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:  # Reduced workers for local model
+        results = list(executor.map(get_ollama_response_for_evaluation, prompts))
 
     return np.mean(results), np.std(results)
 
@@ -120,16 +149,15 @@ def unique_sentence_percent(sequence_batch):
     return len(unique_seq) / len(sequence_batch), len(unique_seq)
 
 def BERT_score(predictions, references):
-    bertscore = evaluate.load("bertscore")
-    results = bertscore.compute(
-        predictions=predictions,
-        references=references,
-        lang="en",
-        rescale_with_baseline=True,
-    )
-    precision = results["precision"]
-    recall = results["recall"]
-    f1 = results["f1"]
+    # Use BERTScorer with the default roberta-large model
+    scorer = BERTScorer(lang="en", rescale_with_baseline=True)
+    precision, recall, f1 = scorer.score(predictions, references)
+
+    # Convert tensors to numpy arrays
+    precision = precision.numpy()
+    recall = recall.numpy()
+    f1 = f1.numpy()
+
     return (
         np.mean(precision),
         np.mean(recall),

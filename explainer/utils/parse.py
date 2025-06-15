@@ -8,6 +8,8 @@ def parse_configure():
     parser.add_argument("--weight_decay", type=float, default=1e-6, help="Weight decay")
     parser.add_argument("--epochs", type=int, default=1, help="Number of epochs")
     parser.add_argument("--mode", type=str, default="finetune", help="finetune or generate")
+    parser.add_argument("--model_name", type=str, default="llama3.1:8b",
+                       help="Ollama model name (e.g., llama3.1:8b, mistral:7b)")
     return parser.parse_args()
 
 args = parse_configure()
